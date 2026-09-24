@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package notification;
+
+service NotificationService {
+  rpc GetNotificationStatus (StatusRequest) returns (StatusResponse);
+}
+
+message StatusRequest {
+  string notification_id = 1;
+}
+
+message StatusResponse {
+  string status = 1;
+}
