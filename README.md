@@ -1,23 +1,15 @@
-# Notification Agent
+## Architecture
 
-Event Driven Notification System
+The notification agent supports multiple channels:
 
-## Tech Stack
+- Email
+- SMS
+- In-App
 
-- Golang
-- Azure Service Bus
-- PostgreSQL
-- SendGrid
+Additional features:
 
-## Project Structure
-
-- cmd/server : Application entry point
-- internal : Business logic
-- configs : Configuration files
-- migrations : Database scripts
-- scripts : Utility scripts
-- docs : Documentation
-
-## Run
-
-go run cmd/server/main.go
+- gRPC APIs
+- Authentication
+- Health Checks
+- Retry Mechanism
+- Dead Letter Queue
