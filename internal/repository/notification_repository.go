@@ -29,3 +29,24 @@ func (r *NotificationRepository) Save(
 
 	return err
 }
+
+func (r *NotificationRepository) GetAll() (*sql.Rows, error) {
+	query := `
+	SELECT id, recipient, channel, message, status, created_at
+	FROM notifications
+	ORDER BY id
+	`
+
+	return r.DB.Query(query)
+}
+
+func (r *NotificationRepository) UpdateStatus(id int, status string) error {
+	query := `
+	UPDATE notifications
+	SET status = $1
+	WHERE id = $2
+	`
+
+	_, err := r.DB.Exec(query, status, id)
+	return err
+}
