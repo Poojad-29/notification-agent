@@ -1,15 +1,27 @@
-## Architecture
+# Notification Agent
 
-The notification agent supports multiple channels:
+## Features
 
-- Email
-- SMS
-- In-App
+- gRPC Support
+- Azure Service Bus Integration
+- Health Check Endpoint
+- Docker Support
+- Configuration Management
+- Logging
+- Unit Testing
 
-Additional features:
+## Project Structure
 
-- gRPC APIs
-- Authentication
-- Health Checks
-- Retry Mechanism
-- Dead Letter Queue
+Describe major folders briefly.
+
+## Run
+
+go run cmd/server/main.go
+
+## Build
+
+go build ./...
+
+## Test
+
+go test ./...
