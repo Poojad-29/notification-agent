@@ -12,7 +12,6 @@ func (r *NotificationRepository) Save(
 	message string,
 	status string,
 ) error {
-
 	query := `
 	INSERT INTO notifications
 	(recipient, channel, message, status)
@@ -48,5 +47,15 @@ func (r *NotificationRepository) UpdateStatus(id int, status string) error {
 	`
 
 	_, err := r.DB.Exec(query, status, id)
+	return err
+}
+
+func (r *NotificationRepository) Delete(id int) error {
+	query := `
+	DELETE FROM notifications
+	WHERE id = $1
+	`
+
+	_, err := r.DB.Exec(query, id)
 	return err
 }

@@ -26,7 +26,6 @@ func main() {
 		"Hello from Azure PostgreSQL",
 		"sent",
 	)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,6 +38,13 @@ func main() {
 	}
 
 	log.Println("Notification status updated")
+
+	err = repo.Delete(2)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Notification deleted successfully")
 
 	rows, err := repo.GetAll()
 	if err != nil {
@@ -62,7 +68,6 @@ func main() {
 			&status,
 			&createdAt,
 		)
-
 		if err != nil {
 			log.Fatal(err)
 		}
