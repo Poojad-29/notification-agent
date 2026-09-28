@@ -8,14 +8,7 @@ import (
 )
 
 func Connect() (*sql.DB, error) {
-	connStr := `
-	host=poojanotificationdb29.postgres.database.azure.com
-	port=5432
-	user=postgresadmin
-	password=Poojasachin@29
-	dbname=notificationdb
-	sslmode=require
-	`
+	connStr := "host=poojanotificationdb29.postgres.database.azure.com port=5432 user=postgresadmin password=Poojasachin@29 dbname=notificationdb sslmode=require"
 
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {

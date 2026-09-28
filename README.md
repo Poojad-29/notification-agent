@@ -2,21 +2,15 @@
 
 ## Features
 
-- gRPC Support
-- Azure Service Bus Integration
-- Health Check Endpoint
-- Docker Support
-- Configuration Management
+- Azure PostgreSQL Integration
+- Token Authentication
+- Rate Limiting
+- Health Check
 - Logging
-- Unit Testing
-
-## Project Structure
-
-Describe major folders briefly.
 
 ## Run
 
-go run cmd/server/main.go
+go run ./cmd/server
 
 ## Build
 
@@ -25,3 +19,8 @@ go build ./...
 ## Test
 
 go test ./...
+
+## Database
+
+Server: poojanotificationdb29
+Database: notificationdb

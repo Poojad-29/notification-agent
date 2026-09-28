@@ -1,5 +1,5 @@
 package grpc
 
-func GetNotificationStatus(id string) string {
-	return "PENDING"
+type StatusResponse struct {
+	Status string
 }

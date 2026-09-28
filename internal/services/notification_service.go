@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"notification-agent/internal/repository"
+	"notification-agent/internal/servicebus"
 )
 
 type NotificationService struct {
@@ -16,12 +17,23 @@ func (s *NotificationService) CreateNotification(
 	message string,
 ) error {
 
-	return s.Repo.Save(
+	err := s.Repo.Save(
 		recipient,
 		channel,
 		message,
 		"sent",
 	)
+
+	if err != nil {
+		return err
+	}
+
+	err = servicebus.SendMessage(message)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *NotificationService) GetNotifications() (*sql.Rows, error) {
@@ -33,15 +45,9 @@ func (s *NotificationService) UpdateNotificationStatus(
 	status string,
 ) error {
 
-	return s.Repo.UpdateStatus(
-		id,
-		status,
-	)
+	return s.Repo.UpdateStatus(id, status)
 }
 
-func (s *NotificationService) DeleteNotification(
-	id int,
-) error {
-
+func (s *NotificationService) DeleteNotification(id int) error {
 	return s.Repo.Delete(id)
 }
