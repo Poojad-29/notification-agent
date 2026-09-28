@@ -3,17 +3,25 @@ package config
 import "os"
 
 type Config struct {
-	SendGridAPIKey string
-	TwilioSID      string
-	TwilioToken    string
-	GRPCToken      string
+	DBHost      string
+	DBPort      string
+	DBUser      string
+	DBPassword  string
+	DBName      string
+	GRPCToken   string
+	TwilioSID   string
+	TwilioToken string
 }
 
 func Load() Config {
 	return Config{
-		SendGridAPIKey: os.Getenv("SENDGRID_API_KEY"),
-		TwilioSID:      os.Getenv("TWILIO_SID"),
-		TwilioToken:    os.Getenv("TWILIO_TOKEN"),
-		GRPCToken:      os.Getenv("GRPC_TOKEN"),
+		DBHost:      os.Getenv("DB_HOST"),
+		DBPort:      os.Getenv("DB_PORT"),
+		DBUser:      os.Getenv("DB_USER"),
+		DBPassword:  os.Getenv("DB_PASSWORD"),
+		DBName:      os.Getenv("DB_NAME"),
+		GRPCToken:   os.Getenv("GRPC_TOKEN"),
+		TwilioSID:   os.Getenv("TWILIO_SID"),
+		TwilioToken: os.Getenv("TWILIO_TOKEN"),
 	}
 }
