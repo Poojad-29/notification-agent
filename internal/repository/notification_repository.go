@@ -12,6 +12,7 @@ func (r *NotificationRepository) Save(
 	message string,
 	status string,
 ) error {
+
 	query := `
 	INSERT INTO notifications
 	(recipient, channel, message, status)
@@ -30,32 +31,53 @@ func (r *NotificationRepository) Save(
 }
 
 func (r *NotificationRepository) GetAll() (*sql.Rows, error) {
+
 	query := `
-	SELECT id, recipient, channel, message, status, created_at
+	SELECT
+		id,
+		recipient,
+		channel,
+		message,
+		status,
+		created_at
 	FROM notifications
-	ORDER BY id
+	ORDER BY id DESC
 	`
 
 	return r.DB.Query(query)
 }
 
-func (r *NotificationRepository) UpdateStatus(id int, status string) error {
+func (r *NotificationRepository) UpdateStatus(
+	id int,
+	status string,
+) error {
+
 	query := `
 	UPDATE notifications
 	SET status = $1
 	WHERE id = $2
 	`
 
-	_, err := r.DB.Exec(query, status, id)
+	_, err := r.DB.Exec(
+		query,
+		status,
+		id,
+	)
+
 	return err
 }
 
 func (r *NotificationRepository) Delete(id int) error {
+
 	query := `
 	DELETE FROM notifications
 	WHERE id = $1
 	`
 
-	_, err := r.DB.Exec(query, id)
+	_, err := r.DB.Exec(
+		query,
+		id,
+	)
+
 	return err
 }

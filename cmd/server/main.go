@@ -5,6 +5,7 @@ import (
 
 	"notification-agent/internal/database"
 	"notification-agent/internal/repository"
+	"notification-agent/internal/services"
 )
 
 func main() {
@@ -20,33 +21,22 @@ func main() {
 		DB: db,
 	}
 
-	err = repo.Save(
+	service := services.NotificationService{
+		Repo: &repo,
+	}
+
+	err = service.CreateNotification(
 		"test@example.com",
 		"email",
-		"Hello from Azure PostgreSQL",
-		"sent",
+		"Hello from Notification Service",
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Notification saved successfully")
+	log.Println("Notification created successfully")
 
-	err = repo.UpdateStatus(1, "delivered")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Notification status updated")
-
-	err = repo.Delete(2)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Notification deleted successfully")
-
-	rows, err := repo.GetAll()
+	rows, err := service.GetNotifications()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -68,6 +58,7 @@ func main() {
 			&status,
 			&createdAt,
 		)
+
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -82,4 +73,10 @@ func main() {
 			createdAt,
 		)
 	}
+
+	if err = rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Notifications retrieved successfully")
 }
