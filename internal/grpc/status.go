@@ -1,5 +1,6 @@
 package grpc
 
 type StatusResponse struct {
-	Status string
+	Status  string
+	Message string
 }

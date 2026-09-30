@@ -3,12 +3,34 @@ package main
 import (
 	"log"
 
+	"github.com/joho/godotenv"
+
 	"notification-agent/internal/database"
+	grpcservice "notification-agent/internal/grpc"
+	"notification-agent/internal/notification"
 	"notification-agent/internal/repository"
 	"notification-agent/internal/services"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Warning: .env file not found")
+	}
+
+	// Twilio SMS Test
+	err = notification.SendSMS(
+		"+918073550593",
+		"Hello from Notification Agent",
+	)
+
+	if err != nil {
+		log.Println("SMS Error:", err)
+	} else {
+		log.Println("SMS sent successfully")
+	}
+
+	// Database Connection
 	db, err := database.Connect()
 	if err != nil {
 		log.Fatal(err)
@@ -17,24 +39,32 @@ func main() {
 
 	log.Println("Database connected successfully")
 
+	// Repository
 	repo := repository.NotificationRepository{
 		DB: db,
 	}
 
+	// Service Layer
 	service := services.NotificationService{
 		Repo: &repo,
 	}
 
-	err = service.CreateNotification(
-		"test@example.com",
-		"email",
-		"Hello from Notification Service",
-	)
-	if err != nil {
-		log.Fatal(err)
+	// gRPC Service
+	grpcSvc := grpcservice.NotificationGRPCService{
+		Service: &service,
 	}
 
-	log.Println("Notification created successfully")
+	response, err := grpcSvc.CreateNotification(
+		"test@example.com",
+		"email",
+		"Hello from gRPC Service",
+	)
+
+	if err != nil {
+		log.Println(err)
+	} else {
+		log.Println(response.Status, response.Message)
+	}
 
 	rows, err := service.GetNotifications()
 	if err != nil {
@@ -72,10 +102,6 @@ func main() {
 			status,
 			createdAt,
 		)
-	}
-
-	if err = rows.Err(); err != nil {
-		log.Fatal(err)
 	}
 
 	log.Println("Notifications retrieved successfully")
