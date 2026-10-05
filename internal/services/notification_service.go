@@ -17,6 +17,7 @@ func (s *NotificationService) CreateNotification(
 	message string,
 ) error {
 
+	// Save notification in PostgreSQL
 	err := s.Repo.Save(
 		recipient,
 		channel,
@@ -28,7 +29,8 @@ func (s *NotificationService) CreateNotification(
 		return err
 	}
 
-	err = servicebus.SendMessage(message)
+	// Send message to Azure Service Bus
+	err = servicebus.SendAzureMessage(message)
 	if err != nil {
 		return err
 	}
@@ -44,10 +46,11 @@ func (s *NotificationService) UpdateNotificationStatus(
 	id int,
 	status string,
 ) error {
-
 	return s.Repo.UpdateStatus(id, status)
 }
 
-func (s *NotificationService) DeleteNotification(id int) error {
+func (s *NotificationService) DeleteNotification(
+	id int,
+) error {
 	return s.Repo.Delete(id)
 }

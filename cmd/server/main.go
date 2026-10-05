@@ -9,6 +9,7 @@ import (
 	grpcservice "notification-agent/internal/grpc"
 	"notification-agent/internal/notification"
 	"notification-agent/internal/repository"
+	"notification-agent/internal/servicebus"
 	"notification-agent/internal/services"
 )
 
@@ -16,6 +17,19 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Warning: .env file not found")
+	}
+
+	// SendGrid Email Test
+	err = notification.SendEmail(
+		"pooja.b.d@capgemini.com",
+		"Notification Agent Test",
+		"Hello from SendGrid Email Integration",
+	)
+
+	if err != nil {
+		log.Println("Email Error:", err)
+	} else {
+		log.Println("Email sent successfully")
 	}
 
 	// Twilio SMS Test
@@ -54,6 +68,7 @@ func main() {
 		Service: &service,
 	}
 
+	// Create Notification
 	response, err := grpcSvc.CreateNotification(
 		"test@example.com",
 		"email",
@@ -66,6 +81,7 @@ func main() {
 		log.Println(response.Status, response.Message)
 	}
 
+	// Get Notifications
 	rows, err := service.GetNotifications()
 	if err != nil {
 		log.Fatal(err)
@@ -105,4 +121,12 @@ func main() {
 	}
 
 	log.Println("Notifications retrieved successfully")
+
+	// Azure Service Bus Consumer Test
+	err = servicebus.ReceiveMessage()
+	if err != nil {
+		log.Println("Service Bus Receive Error:", err)
+	} else {
+		log.Println("Service Bus message processed successfully")
+	}
 }
