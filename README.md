@@ -29,8 +29,17 @@ Database: notificationdb
 
 Azure Container Registry was created successfully.
 
-ACR Build could not be completed because the Azure subscription returned:
+Registry SKU was upgraded from Basic to Premium.
+
+The following operations failed:
+
+- az acr build
+- az acr task create
+
+with:
 
 TasksOperationsNotAllowed
 
-This prevents Azure Container Registry Tasks from executing build operations in the current subscription.
+This indicates Azure Container Registry Tasks are restricted by the current subscription/tenant policy.
+
+Consequently, container images could not be built and Azure Container Instance deployment could not be completed.
